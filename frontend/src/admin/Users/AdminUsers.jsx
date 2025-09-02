@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./users.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 const AdminUsers = ({ user }) => {
   const navigate = useNavigate();
 
-  if (user && user.mainrole !== "superadmin")return navigate("/");
+  if (user && user.mainrole !== "superadmin") return navigate("/");
 
   const [users, setUsers] = useState([]);
 
@@ -17,7 +17,7 @@ const AdminUsers = ({ user }) => {
     try {
       const { data } = await axios.get(`${server}/api/users`, {
         headers: {
-          token: localStorage.getItem("token"),
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Changed to standard Authorization header
         },
       });
 
@@ -39,7 +39,7 @@ const AdminUsers = ({ user }) => {
           {},
           {
             headers: {
-              token: localStorage.getItem("token"),
+              Authorization: `Bearer ${localStorage.getItem("token")}`, // Changed to standard Authorization header
             },
           }
         );
@@ -69,8 +69,8 @@ const AdminUsers = ({ user }) => {
           </thead>
 
           <tbody>
-          {users &&
-            users.map((e, i) => (
+            {users &&
+              users.map((e, i) => (
                 <tr key={e._id || i}>
                   <td>{i + 1}</td>
                   <td>{e.name}</td>
@@ -85,8 +85,8 @@ const AdminUsers = ({ user }) => {
                     </button>
                   </td>
                 </tr>
-            ))}
-             </tbody>
+              ))}
+          </tbody>
         </table>
       </div>
     </Layout>
